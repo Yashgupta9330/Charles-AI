@@ -7,11 +7,7 @@ import { checkApiLimit, increaseApiLimit } from "@/lib/apilimit";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+
 
 function fileToGenerativePart(filePath: string, mimeType: string) {
   return {
