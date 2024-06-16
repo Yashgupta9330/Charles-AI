@@ -36,6 +36,7 @@ const processImage = async (filePath: string, step: string, prevResults: any = {
     const initialHtmlResponse = await model.generateContent([htmlPrompt, image]);
     result = { initialHtml: initialHtmlResponse.response.text() };
   } else if (step === "refinedHtml") {
+    await increaseApiLimit();
     const refineHtmlPrompt = `Validate the following HTML code based on the UI description and image and provide a refined version of the HTML code with inline CSS that improves accuracy, responsiveness, and adherence to the original design. ONLY return the refined HTML code with inline CSS. Avoid using \`\`\`html. and \`\`\` at the end. Here is the initial HTML: ${prevResults.initialHtml}`;
     const refinedHtmlResponse = await model.generateContent([refineHtmlPrompt, image]);
     result = { refinedHtml: refinedHtmlResponse.response.text() };
@@ -85,7 +86,6 @@ export async function POST(req: Request) {
 
     // Clean up the temporary file
     await fs.promises.unlink(filePath);
-    await increaseApiLimit();
     return NextResponse.json(results);
   } catch (error) {
     console.error('[CODE_ERROR]', error);
