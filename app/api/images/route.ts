@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     }
 
     const model = genAI.getGenerativeModel({ model: "gemini-pro"});
-    const result = await model.generateImage(messages[0].content);
+    const result = await model.generateContent(messages[0].content);
     const response = result.response;
     const text = response.text();
     console.log(text);
